@@ -1,4 +1,6 @@
-﻿namespace RazorEngine.Configuration
+﻿using System.Linq;
+
+namespace RazorEngine.Configuration
 {
     using System;
     using System.Collections.Generic;
@@ -16,6 +18,12 @@
     /// </summary>
     public class TemplateServiceConfiguration : ITemplateServiceConfiguration
     {
+        private static readonly IEnumerable<Type> _requiredTypes = new List<Type> { typeof(AppDomain), typeof(List<>), typeof(IQueryable<>), typeof(RazorEngineHost) };
+        /// <summary>
+        /// 
+        /// </summary>
+        public static IEnumerable<Type> RequiredTypes { get { return _requiredTypes.ToList().AsReadOnly(); } }
+
 #pragma warning disable 0618 // Backwards Compat.
         private ITemplateResolver resolver;
 #pragma warning restore 0618 // Backwards Compat.
@@ -40,16 +48,10 @@
 
             ReferenceResolver = new UseCurrentAssembliesReferenceResolver();
             CachingProvider = new DefaultCachingProvider();
-            TemplateManager =
-                new DelegateTemplateManager();
+            TemplateManager = new DelegateTemplateManager();
 
-            Namespaces = new HashSet<string>
-                             {
-                                 "System", 
-                                 "System.Collections.Generic", 
-                                 "System.Linq"
-                             };
-            
+            Namespaces = new HashSet<string>(_requiredTypes.Select(dn => dn.Namespace));
+
             var config = RazorEngineConfigurationSection.GetConfiguration();
             Language = (config == null)
                            ? Language.CSharp

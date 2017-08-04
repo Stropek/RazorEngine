@@ -252,6 +252,7 @@
     <Compile Include="Compilation\RazorDynamicObject.cs" />
     <Compile Include="Compilation\RazorEngineHost.cs" />
     <Compile Include="Compilation\ReferenceResolver\CompilerReference.cs" />
+    <Compile Include="Compilation\ReferenceResolver\MinimumReferenceResolver.cs" />
     <Compile Include="Compilation\ReferenceResolver\IReferenceResolver.cs" />
     <Compile Include="Compilation\CompilationData.cs" />
     <Compile Include="Compilation\ReferenceResolver\UseCurrentAssembliesReferenceResolver.cs" />
